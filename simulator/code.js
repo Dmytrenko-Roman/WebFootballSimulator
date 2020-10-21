@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 canvas.width = 540;
 canvas.height = 360;
 
-const speed = 2;
+let speed = 1;
 
 const getRandom = (min, max) => {
   return min + Math.random() * (max - min + 1);
@@ -71,14 +71,26 @@ const drawBall = () => {
 };
 
 const movePlayers1 = () => {
-  for (let i = 0; i < players1.length; i++) {
+  for (let i = 0; i < players1.length - 1; i++) {
+    if (players1[i].x + speed * Math.cos(players1[i].a) > canvas.width) {
+      speed = -speed;
+    }; 
+    if (players1[i].x + speed * Math.cos(players1[i].a) < canvas.width / 2) {
+      speed = -speed;
+    }; 
     players1[i].x = players1[i].x + speed * Math.cos(players1[i].a);
     players1[i].y = players1[i].y + speed * Math.sin(players1[i].a);
   }
 }
 
 const movePlayers2 = () => {
-  for (let i = 0; i < players2.length; i++) {
+  for (let i = 0; i < players2.length - 1; i++) {
+    if (players2[i].x + speed * Math.cos(players2[i].a) > canvas.width) {
+      speed = -speed;
+    }; 
+    if (players2[i].x + speed * Math.cos(players2[i].a) < canvas.width / 2) {
+      speed = -speed;
+    }; 
     players2[i].x = players2[i].x + speed * Math.cos(players2[i].a);
     players2[i].y = players2[i].y + speed * Math.sin(players2[i].a);
   }
