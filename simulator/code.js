@@ -6,31 +6,38 @@ const ctx = canvas.getContext('2d');
 canvas.width = 540;
 canvas.height = 360;
 
+const speed = 2;
+
+const getRandom = (min, max) => {
+  return min + Math.random() * (max - min + 1);
+}
+
 const players1 = [
-  { x: canvas.width / 2, y: canvas.height / 2 },
-  { x: canvas.width / 2 + 70, y: canvas.height / 2 },
-  { x: canvas.width / 2 + 40, y: canvas.height / 2 + 70 },
-  { x: canvas.width / 2 + 40, y: canvas.height / 2 - 70 },
-  { x: canvas.width / 2 + 120, y: canvas.height / 2 + 30 },
-  { x: canvas.width / 2 + 120, y: canvas.height / 2 - 30 },
-  { x: canvas.width / 2 + 170, y: canvas.height / 2 + 25 },
-  { x: canvas.width / 2 + 170, y: canvas.height / 2 - 25 },
-  { x: canvas.width / 2 + 150, y: canvas.height / 2 - 80 },
-  { x: canvas.width / 2 + 150, y: canvas.height / 2 + 80 },
-  { x: canvas.width / 2 + 240, y: canvas.height / 2 },
+  { x: canvas.width / 2, y: canvas.height / 2, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 + 70, y: canvas.height / 2, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 + 40, y: canvas.height / 2 + 70, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 + 40, y: canvas.height / 2 - 70, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 + 120, y: canvas.height / 2 + 30, a: getRandom(0, 2 * Math.PI)},
+  { x: canvas.width / 2 + 120, y: canvas.height / 2 - 30, a: getRandom(0, 2 * Math.PI)},
+  { x: canvas.width / 2 + 170, y: canvas.height / 2 + 25, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 + 170, y: canvas.height / 2 - 25, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 + 150, y: canvas.height / 2 - 80, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 + 150, y: canvas.height / 2 + 80, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 + 240, y: canvas.height / 2, a: 0 },
 ];
+
 const players2 = [
-  { x: canvas.width / 2 - 40, y: canvas.height / 2 },
-  { x: canvas.width / 2 - 70, y: canvas.height / 2 },
-  { x: canvas.width / 2 - 40, y: canvas.height / 2 + 70 },
-  { x: canvas.width / 2 - 40, y: canvas.height / 2 - 70 },
-  { x: canvas.width / 2 - 120, y: canvas.height / 2 + 30 },
-  { x: canvas.width / 2 - 120, y: canvas.height / 2 - 30 },
-  { x: canvas.width / 2 - 170, y: canvas.height / 2 + 25 },
-  { x: canvas.width / 2 - 170, y: canvas.height / 2 - 25 },
-  { x: canvas.width / 2 - 150, y: canvas.height / 2 - 80 },
-  { x: canvas.width / 2 - 150, y: canvas.height / 2 + 80 },
-  { x: canvas.width / 2 - 240, y: canvas.height / 2 },
+  { x: canvas.width / 2 - 40, y: canvas.height / 2, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 70, y: canvas.height / 2, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 40, y: canvas.height / 2 + 70, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 40, y: canvas.height / 2 - 70, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 120, y: canvas.height / 2 + 30, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 120, y: canvas.height / 2 - 30, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 170, y: canvas.height / 2 + 25, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 170, y: canvas.height / 2 - 25, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 150, y: canvas.height / 2 - 80, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 150, y: canvas.height / 2 + 80, a: getRandom(0, 2 * Math.PI) },
+  { x: canvas.width / 2 - 240, y: canvas.height / 2, a: 0 },
 ];
 
 const pitch = () => {
@@ -63,7 +70,29 @@ const drawBall = () => {
   ctx.fill();
 };
 
-pitch();
-drawPlayers1();
-drawPlayers2();
-drawBall();
+const movePlayers1 = () => {
+  for (let i = 0; i < players1.length; i++) {
+    players1[i].x = players1[i].x + speed * Math.cos(players1[i].a);
+    players1[i].y = players1[i].y + speed * Math.sin(players1[i].a);
+  }
+}
+
+const movePlayers2 = () => {
+  for (let i = 0; i < players2.length; i++) {
+    players2[i].x = players2[i].x + speed * Math.cos(players2[i].a);
+    players2[i].y = players2[i].y + speed * Math.sin(players2[i].a);
+  }
+}
+
+
+const tick = () => {
+  pitch();
+  movePlayers1();
+  movePlayers2();
+  drawPlayers1();
+  drawPlayers2();
+  drawBall();
+  requestAnimationFrame(tick);
+}
+
+tick();
