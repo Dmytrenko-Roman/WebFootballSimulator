@@ -2,7 +2,7 @@
   "name": "webfootballsimulator",
   "version": "1.0.0",
   "description": "",
-  "main": "code.js",
+  "main": "./simulator/code.js",
   "scripts": {
     "lint": "eslint *.js",
     "fix": "eslint *.js --fix"
