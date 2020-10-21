@@ -4,8 +4,8 @@
   "description": "",
   "main": "./simulator/code.js",
   "scripts": {
-    "lint": "eslint *.js",
-    "fix": "eslint *.js --fix"
+    "lint": "eslint **/*.js",
+    "fix": "eslint **/*.js --fix"
   },
   "repository": {
     "type": "git",
