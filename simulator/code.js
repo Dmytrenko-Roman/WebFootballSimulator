@@ -44,7 +44,7 @@ const getRandom = (min, max) => min + Math.random() * (max - min + 1);
 const goalkeeper1 = {
   x: xp + 15,
   y: canvas.height / 2,
-}
+};
 
 const players1 = [
   goalkeeper1,
@@ -159,8 +159,8 @@ const drawBall = () => {
 
 const moveGoalkeepers = () => {
   if (goalkeeper1.y < yga1 || goalkeeper1.y > yga1 + hga) {
-    speed = -speed
-  } 
+    speed = -speed;
+  }
   goalkeeper1.y -= speed;
 };
 
