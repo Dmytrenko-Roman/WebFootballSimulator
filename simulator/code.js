@@ -52,7 +52,7 @@ const goalkeeper1 = {
 const ball = {
   x: xp + 19,
   y: canvas.height / 2 - 5,
-}
+};
 
 const players1 = [
   goalkeeper1,
@@ -72,7 +72,7 @@ const gridGenerator = () => {
       grid.push({ x: xp + i, y: yp + k, w: 20, l: 20 });
     }
   }
-}
+};
 
 const gridDraw = () => {
   ctx.beginPath();
@@ -178,7 +178,7 @@ const moveBall = () => {
     speedBall = -speedBall;
   }
   ball.y -= speedBall;
-}
+};
 
 const moveGoalkeepers = () => {
   if (goalkeeper1.y < yga1 || goalkeeper1.y > yga1 + hga) {
