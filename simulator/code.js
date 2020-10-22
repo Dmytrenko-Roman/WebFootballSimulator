@@ -46,13 +46,23 @@ const pitch = () => {
     ctx.fillRect(xp + i, yp, 40, hp);
   }
   ctx.fillStyle = 'white';
-  ctx.arc(canvas.width / 2, canvas.height / 2, 5, 0, Math.PI * 2);
+  ctx.arc(canvas.width / 2, canvas.height / 2, 4, 0, Math.PI * 2);
   ctx.fill();
+  ctx.closePath();
   ctx.beginPath();
-  ctx.arc(canvas.width / 2, canvas.height / 2, 80, 0, Math.PI * 2);
+  ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, Math.PI * 2);
   ctx.moveTo(canvas.width / 2, yp + 1);
   ctx.lineTo(canvas.width / 2, yp + 400);
   ctx.rect(xp + 1, yp + 1, wp, hp);
+  // Penalty areas:
+  ctx.rect(xp + 1, canvas.height / 2 - 110, 130, 220);
+  ctx.rect(xp + 1, canvas.height / 2 - 40, 45, 80);
+  ctx.ellipse(xp + 1 + wp - 130, canvas.height / 2, 30, 40, 0, Math.PI / 2, -Math.PI / 2);
+  ctx.rect(xp + 1 + wp - 130, canvas.height / 2 - 110, 130, 220);
+  ctx.rect(xp + 1 + wp - 45, canvas.height / 2 - 40, 45, 80);
+  //ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, Math.PI * 2);
+
+  ctx.closePath();
   ctx.strokeStyle = 'white';
   ctx.stroke();
 };
