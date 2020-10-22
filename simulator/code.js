@@ -7,7 +7,8 @@ const checkbox = document.getElementById('grid');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let speed = 0.5;
+let speedPlayers = 0.5;
+let speedBall = 0.5;
 
 // Pitch params:
 const wp = 600;
@@ -41,10 +42,17 @@ const hga = 80;
 
 const getRandom = (min, max) => min + Math.random() * (max - min + 1);
 
+const grid = [];
+
 const goalkeeper1 = {
-  x: xp + 15,
+  x: xp + 17,
   y: canvas.height / 2,
 };
+
+const ball = {
+  x: xp + 19,
+  y: canvas.height / 2 - 5,
+}
 
 const players1 = [
   goalkeeper1,
@@ -58,7 +66,15 @@ const players2 = [
   },
 ];
 
-const grid = () => {
+const gridGenerator = () => {
+  for (let i = 0; i < wp; i += 20) {
+    for (let k = 0; k < hp; k += 20) {
+      grid.push({ x: xp + i, y: yp + k, w: 20, l: 20 });
+    }
+  }
+}
+
+const gridDraw = () => {
   ctx.beginPath();
   ctx.fillStyle = 'green';
   const grid = [];
@@ -153,21 +169,30 @@ const drawPlayers2 = () => {
 const drawBall = () => {
   ctx.beginPath();
   ctx.fillStyle = 'white';
-  ctx.arc(canvas.width / 2 + 45, canvas.height / 2 + 5, 5, 0, 2 * Math.PI);
+  ctx.arc(ball.x, ball.y, 5, 0, 2 * Math.PI);
   ctx.fill();
 };
 
+const moveBall = () => {
+  if (ball.y < yga1 || ball.y > yga1 + hga) {
+    speedBall = -speedBall;
+  }
+  ball.y -= speedBall;
+}
+
 const moveGoalkeepers = () => {
   if (goalkeeper1.y < yga1 || goalkeeper1.y > yga1 + hga) {
-    speed = -speed;
+    speedPlayers = -speedPlayers;
   }
-  goalkeeper1.y -= speed;
+  goalkeeper1.y -= speedPlayers;
 };
 
 const tick = () => {
   pitch();
+  drawBall();
+  moveBall();
   moveGoalkeepers();
-  if (checkbox.checked) grid();
+  if (checkbox.checked) gridDraw();
   drawPlayers1();
   drawPlayers2();
   drawBall();
