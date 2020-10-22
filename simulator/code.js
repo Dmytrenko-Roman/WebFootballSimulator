@@ -7,7 +7,7 @@ const checkbox = document.getElementById('grid');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let speed = 1;
+let speed = 0.5;
 
 // Pitch params:
 const wp = 600;
@@ -23,25 +23,36 @@ const ypa1 = canvas.height / 2 - 110;
 const xpa2 = xp + wp - 130;
 const ypa2 = canvas.height / 2 - 110;
 
-// Width and heigth of penalty area:
+// First goalkeeper area:
+const xga1 = xp;
+const yga1 = canvas.height / 2 - 40;
+
+// Second goalkeeper area:
+const xga2 = xp + wp - 45;
+const yga2 = canvas.height / 2 - 40;
+
+// Width and heigth of penalty area, goalkeeper area:
 const wpa = 130;
 const hpa = 220;
+const wga = 45;
+const hga = 80;
 
 // -------------
 
 const getRandom = (min, max) => min + Math.random() * (max - min + 1);
 
+const goalkeeper1 = {
+  x: xp + 15,
+  y: canvas.height / 2,
+}
+
 const players1 = [
-  {
-    x: canvas.width / 2 + 40,
-    y: canvas.height / 2,
-    a: getRandom(0, 2 * Math.PI)
-  },
+  goalkeeper1,
 ];
 
 const players2 = [
   {
-    x: canvas.width / 2 - 40,
+    x: canvas.width / 2 + 280,
     y: canvas.height / 2,
     a: getRandom(0, 2 * Math.PI)
   },
@@ -57,11 +68,23 @@ const grid = () => {
       ctx.strokeStyle = 'black';
       ctx.rect(xp + i, yp + k, 20, 20);
       ctx.stroke();
-      grid.push([xp + i, yp + k, 20, 20]);
+      grid.push({ x: xp + i, y: yp + k, w: 20, l: 20 });
     }
   }
   ctx.closePath();
-  //console.log(grid);
+  for (let i = 0; i < grid.length; i++) {
+    if (grid[i].x < goalkeeper1.x && grid[i].x + grid[i].w > goalkeeper1.x) {
+      if (grid[i].y > goalkeeper1.y && grid[i].y - grid[i].l < goalkeeper1.y) {
+        ctx.beginPath();
+        ctx.fillStyle = 'grey';
+        ctx.fillRect(grid[i - 1].x, grid[i - 1].y, 20, 20);
+        ctx.strokeStyle = 'black';
+        ctx.rect(grid[i - 1].x, grid[i - 1].y, 20, 20);
+        ctx.stroke();
+        console.log(grid[i - 1].x, grid[i - 1].y);
+      }
+    }
+  }
 };
 
 const pitch = () => {
@@ -80,8 +103,8 @@ const pitch = () => {
   ctx.closePath();
   ctx.beginPath();
   ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, Math.PI * 2);
-  ctx.moveTo(canvas.width / 2, yp + 1);
-  ctx.lineTo(canvas.width / 2, yp + 400);
+  ctx.moveTo(canvas.width / 2, yp);
+  ctx.lineTo(canvas.width / 2, yp + hp);
   ctx.rect(xp, yp, wp, hp);
   ctx.closePath();
   ctx.strokeStyle = 'white';
@@ -95,9 +118,9 @@ const pitch = () => {
   ctx.beginPath();
   ctx.ellipse(xp + wp - 130, canvas.height / 2, 30, 40, 0, Math.PI / 2, -Math.PI / 2);
   ctx.rect(xpa1, ypa1, wpa, hpa);
-  ctx.rect(xp, canvas.height / 2 - 40, 45, 80);
+  ctx.rect(xga1, yga1, wga, hga);
   ctx.rect(xpa2, ypa2, wpa, hpa);
-  ctx.rect(xp + wp - 45, canvas.height / 2 - 40, 45, 80);
+  ctx.rect(xga2, yga2, wga, hga);
   ctx.closePath();
   ctx.strokeStyle = 'white';
   ctx.stroke();
@@ -134,37 +157,17 @@ const drawBall = () => {
   ctx.fill();
 };
 
-const movePlayers1 = () => {
-  for (let i = 0; i < players1.length - 1; i++) {
-    if (players1[i].x + speed * Math.cos(players1[i].a) > canvas.width) {
-      speed = -speed;
-    }
-    if (players1[i].x + speed * Math.cos(players1[i].a) < canvas.width / 2) {
-      speed = -speed;
-    }
-    players1[i].x += speed * Math.cos(players1[i].a);
-    players1[i].y += speed * Math.sin(players1[i].a);
-  }
-};
-
-const movePlayers2 = () => {
-  for (let i = 0; i < players2.length - 1; i++) {
-    if (players2[i].x + speed * Math.cos(players2[i].a) > canvas.width) {
-      speed = -speed;
-    }
-    if (players2[i].x + speed * Math.cos(players2[i].a) < canvas.width / 2) {
-      speed = -speed;
-    }
-    players2[i].x += speed * Math.cos(players2[i].a);
-    players2[i].y += speed * Math.sin(players2[i].a);
-  }
+const moveGoalkeepers = () => {
+  if (goalkeeper1.y < yga1 || goalkeeper1.y > yga1 + hga) {
+    speed = -speed
+  } 
+  goalkeeper1.y -= speed;
 };
 
 const tick = () => {
   pitch();
+  moveGoalkeepers();
   if (checkbox.checked) grid();
-  movePlayers1();
-  movePlayers2();
   drawPlayers1();
   drawPlayers2();
   drawBall();
