@@ -3,68 +3,27 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = 540;
-canvas.height = 360;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 let speed = 1;
+
+// Pitch params:
+
+const wp = 600;
+const hp = 400;
+const xp = (canvas.width / 2) - (wp / 2);
+const yp = (canvas.height / 2) - (hp / 2);
+
+// -------------
 
 const getRandom = (min, max) => min + Math.random() * (max - min + 1);
 
 const players1 = [
   {
-    x: canvas.width / 2,
-    y: canvas.height / 2,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 + 70,
-    y: canvas.height / 2,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
     x: canvas.width / 2 + 40,
-    y: canvas.height / 2 + 70,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 + 40,
-    y: canvas.height / 2 - 70,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 + 120,
-    y: canvas.height / 2 + 30,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 + 120,
-    y: canvas.height / 2 - 30,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 + 170,
-    y: canvas.height / 2 + 25,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 + 170,
-    y: canvas.height / 2 - 25,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 + 150,
-    y: canvas.height / 2 - 80,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 + 150,
-    y: canvas.height / 2 + 80,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 + 240,
     y: canvas.height / 2,
-    a: 0
+    a: getRandom(0, 2 * Math.PI)
   },
 ];
 
@@ -74,61 +33,28 @@ const players2 = [
     y: canvas.height / 2,
     a: getRandom(0, 2 * Math.PI)
   },
-  {
-    x: canvas.width / 2 - 70,
-    y: canvas.height / 2,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 - 40,
-    y: canvas.height / 2 + 70,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 - 40,
-    y: canvas.height / 2 - 70,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 - 120,
-    y: canvas.height / 2 + 30,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 - 120,
-    y: canvas.height / 2 - 30,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 - 170,
-    y: canvas.height / 2 + 25,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 - 170,
-    y: canvas.height / 2 - 25,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 - 150,
-    y: canvas.height / 2 - 80,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 - 150,
-    y: canvas.height / 2 + 80,
-    a: getRandom(0, 2 * Math.PI)
-  },
-  {
-    x: canvas.width / 2 - 240,
-    y: canvas.height / 2,
-    a: 0
-  },
 ];
 
 const pitch = () => {
+  ctx.beginPath();
   ctx.fillStyle = 'green';
-  ctx.fillRect(0, 0, canvas.width, canvas.width);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'green';
+  ctx.fillRect(xp, yp, wp, hp);
+  ctx.fillStyle = 'darkgreen';
+  for (let i = 0; i < wp; i += 80) {
+    ctx.fillRect(xp + i, yp, 40, hp);
+  }
+  ctx.fillStyle = 'white';
+  ctx.arc(canvas.width / 2, canvas.height / 2, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(canvas.width / 2, canvas.height / 2, 80, 0, Math.PI * 2);
+  ctx.moveTo(canvas.width / 2, yp + 1);
+  ctx.lineTo(canvas.width / 2, yp + 400);
+  ctx.rect(xp + 1, yp + 1, wp, hp);
+  ctx.strokeStyle = 'white';
+  ctx.stroke();
 };
 
 const drawPlayers1 = () => {
@@ -137,6 +63,9 @@ const drawPlayers1 = () => {
     ctx.fillStyle = 'blue';
     ctx.arc(players1[i].x, players1[i].y, 10, 0, 2 * Math.PI);
     ctx.fill();
+    ctx.strokeStyle = 'black';
+    ctx.arc(players1[i].x, players1[i].y, 10, 0, 2 * Math.PI);
+    ctx.stroke();
   }
 };
 
@@ -146,13 +75,16 @@ const drawPlayers2 = () => {
     ctx.fillStyle = 'red';
     ctx.arc(players2[i].x, players2[i].y, 10, 0, 2 * Math.PI);
     ctx.fill();
+    ctx.strokeStyle = 'black';
+    ctx.arc(players2[i].x, players2[i].y, 10, 0, 2 * Math.PI);
+    ctx.stroke();
   }
 };
 
 const drawBall = () => {
   ctx.beginPath();
   ctx.fillStyle = 'white';
-  ctx.arc(canvas.width / 2 + 5, canvas.height / 2 + 5, 5, 0, 2 * Math.PI);
+  ctx.arc(canvas.width / 2 + 45, canvas.height / 2 + 5, 5, 0, 2 * Math.PI);
   ctx.fill();
 };
 
