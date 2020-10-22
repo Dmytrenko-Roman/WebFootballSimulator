@@ -50,19 +50,19 @@ const players2 = [
 const grid = () => {
   ctx.beginPath();
   ctx.fillStyle = 'green';
-  let grid = [];
+  const grid = [];
   for (let i = 0; i < wp; i += 20) {
     for (let k = 0; k < hp; k += 20) {
       ctx.fillRect(xp + i, yp + k, 20, 20);
       ctx.strokeStyle = 'black';
       ctx.rect(xp + i, yp + k, 20, 20);
       ctx.stroke();
-      grid.push([xp + i, yp + k, 20, 20])
+      grid.push([xp + i, yp + k, 20, 20]);
     }
   }
   ctx.closePath();
   //console.log(grid);
-}
+};
 
 const pitch = () => {
   ctx.beginPath();
