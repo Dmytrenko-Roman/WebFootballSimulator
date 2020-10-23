@@ -154,7 +154,7 @@ const pitch = () => {
   ctx.strokeStyle = 'white';
   ctx.stroke();
   ctx.beginPath();
-  ctx.arc(xp + wp, yp + hp, 6, - Math.PI / 2, Math.PI, true);
+  ctx.arc(xp + wp, yp + hp, 6, -Math.PI / 2, Math.PI, true);
   ctx.strokeStyle = 'white';
   ctx.stroke();
 };
