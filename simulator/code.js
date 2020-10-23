@@ -140,6 +140,23 @@ const pitch = () => {
   ctx.closePath();
   ctx.strokeStyle = 'white';
   ctx.stroke();
+  // Corner areas:
+  ctx.beginPath();
+  ctx.arc(xp, yp, 6, 0, Math.PI / 2, false);
+  ctx.strokeStyle = 'white';
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(xp + wp, yp, 6, Math.PI, Math.PI / 2, true);
+  ctx.strokeStyle = 'white';
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(xp, yp + hp, 6, 0, -Math.PI / 2, true);
+  ctx.strokeStyle = 'white';
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(xp + wp, yp + hp, 6, - Math.PI / 2, Math.PI, true);
+  ctx.strokeStyle = 'white';
+  ctx.stroke();
 };
 
 const drawPlayers1 = () => {
