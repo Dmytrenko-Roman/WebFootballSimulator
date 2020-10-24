@@ -65,7 +65,6 @@ const penaltyAreas = {
     ctx.stroke();
     ctx.beginPath();
     ctx.ellipse(xp + wp - 130, canvas.height / 2, 30, 40, 0, Math.PI / 2, -Math.PI / 2);
-    console.log(this.xpa1, this.ypa1, this.wpa, this.hpa);
     ctx.rect(this.xpa1, this.ypa1, this.wpa, this.hpa);
     ctx.rect(this.xga1, this.yga1, this.wga, this.hga);
     ctx.rect(this.xpa2, this.ypa2, this.wpa, this.hpa);
@@ -101,8 +100,6 @@ const cornerAreas = {
 
 const getRandom = (min, max) => min + Math.random() * (max - min + 1);
 
-const grid = [];
-
 const goalkeeper1 = {
   x: xp + 17,
   y: canvas.height / 2,
@@ -125,6 +122,8 @@ const players2 = [
   },
 ];
 
+let grid = [];
+
 const gridGenerator = () => {
   for (let i = 0; i < wp; i += 20) {
     for (let k = 0; k < hp; k += 20) {
@@ -136,15 +135,12 @@ const gridGenerator = () => {
 const gridDraw = () => {
   ctx.beginPath();
   ctx.fillStyle = 'green';
-  const grid = [];
-  for (let i = 0; i < wp; i += 20) {
-    for (let k = 0; k < hp; k += 20) {
-      ctx.fillRect(xp + i, yp + k, 20, 20);
-      ctx.strokeStyle = 'black';
-      ctx.rect(xp + i, yp + k, 20, 20);
-      ctx.stroke();
-      grid.push({ x: xp + i, y: yp + k, w: 20, l: 20 });
-    }
+  gridGenerator();
+  for (let i = 0; i < grid.length; i++) {
+    ctx.fillRect(grid[i].x, grid[i].y, grid[i].w, grid[i].l);
+    ctx.strokeStyle = 'black';
+    ctx.rect(grid[i].x, grid[i].y, grid[i].w, grid[i].l);
+    ctx.stroke();
   }
   ctx.closePath();
   for (let i = 0; i < grid.length; i++) {
