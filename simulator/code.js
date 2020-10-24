@@ -7,36 +7,100 @@ const checkbox = document.getElementById('grid');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+console.log(canvas.height);
+
 let speedPlayers = 0.5;
 let speedBall = 0.5;
 
-// Pitch params:
 const wp = 600;
 const hp = 400;
 const xp = (canvas.width / 2) - (wp / 2);
 const yp = (canvas.height / 2) - (hp / 2);
 
-// First penalty area params:
-const xpa1 = xp;
-const ypa1 = canvas.height / 2 - 110;
+const bg = {
+  linelength: 40,
+  draw: function() {
+    ctx.beginPath();
+    ctx.fillStyle = 'green';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'green';
+    ctx.fillRect(xp, yp, wp, hp);
+    ctx.fillStyle = 'darkgreen';
+    for (let i = 0; i < wp; i += 80) {
+      ctx.fillRect(xp + i, yp, this.linelength, hp);
+    }
+  }
+}
 
-// Second penalty area params:
-const xpa2 = xp + wp - 130;
-const ypa2 = canvas.height / 2 - 110;
+const lines = {
+  draw: function() {
+    ctx.fillStyle = 'white';
+    ctx.arc(canvas.width / 2, canvas.height / 2, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, Math.PI * 2);
+    ctx.moveTo(canvas.width / 2, yp);
+    ctx.lineTo(canvas.width / 2, yp + hp);
+    ctx.rect(xp, yp, wp, hp);
+    ctx.closePath();
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+  }
+}
 
-// First goalkeeper area:
-const xga1 = xp;
-const yga1 = canvas.height / 2 - 40;
+const penaltyAreas = {
+  xpa1: xp,
+  ypa1: canvas.height / 2 - 110,
+  xpa2: xp + wp - 130,
+  ypa2: canvas.height / 2 - 110,
+  xga1: xp,
+  yga1: canvas.height / 2 - 40,
+  xga2: xp + wp - 45,
+  yga2: canvas.height / 2 - 40,
+  wpa: 130,
+  hpa: 220,
+  wga: 45,
+  hga: 80,
+  draw: function() {
+    ctx.beginPath();
+    ctx.ellipse(xp + 130, canvas.height / 2, 30, 40, 0, -Math.PI / 2, Math.PI / 2);
+    ctx.closePath();
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(xp + wp - 130, canvas.height / 2, 30, 40, 0, Math.PI / 2, -Math.PI / 2);
+    console.log(this.xpa1, this.ypa1, this.wpa, this.hpa);
+    ctx.rect(this.xpa1, this.ypa1, this.wpa, this.hpa);
+    ctx.rect(this.xga1, this.yga1, this.wga, this.hga);
+    ctx.rect(this.xpa2, this.ypa2, this.wpa, this.hpa);
+    ctx.rect(this.xga2, this.yga2, this.wga, this.hga);
+    ctx.closePath();
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+  }
+}
 
-// Second goalkeeper area:
-const xga2 = xp + wp - 45;
-const yga2 = canvas.height / 2 - 40;
-
-// Width and heigth of penalty area, goalkeeper area:
-const wpa = 130;
-const hpa = 220;
-const wga = 45;
-const hga = 80;
+const cornerAreas = {
+  draw: function() {
+    ctx.beginPath();
+    ctx.arc(xp, yp, 6, 0, Math.PI / 2, false);
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(xp + wp, yp, 6, Math.PI, Math.PI / 2, true);
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(xp, yp + hp, 6, 0, -Math.PI / 2, true);
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(xp + wp, yp + hp, 6, -Math.PI / 2, Math.PI, true);
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+  }
+}
 
 // -------------
 
@@ -104,59 +168,10 @@ const gridDraw = () => {
 };
 
 const pitch = () => {
-  ctx.beginPath();
-  ctx.fillStyle = 'green';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'green';
-  ctx.fillRect(xp, yp, wp, hp);
-  ctx.fillStyle = 'darkgreen';
-  for (let i = 0; i < wp; i += 80) {
-    ctx.fillRect(xp + i, yp, 40, hp);
-  }
-  ctx.fillStyle = 'white';
-  ctx.arc(canvas.width / 2, canvas.height / 2, 4, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.closePath();
-  ctx.beginPath();
-  ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, Math.PI * 2);
-  ctx.moveTo(canvas.width / 2, yp);
-  ctx.lineTo(canvas.width / 2, yp + hp);
-  ctx.rect(xp, yp, wp, hp);
-  ctx.closePath();
-  ctx.strokeStyle = 'white';
-  ctx.stroke();
-  // Penalty areas:
-  ctx.beginPath();
-  ctx.ellipse(xp + 130, canvas.height / 2, 30, 40, 0, -Math.PI / 2, Math.PI / 2);
-  ctx.closePath();
-  ctx.strokeStyle = 'white';
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.ellipse(xp + wp - 130, canvas.height / 2, 30, 40, 0, Math.PI / 2, -Math.PI / 2);
-  ctx.rect(xpa1, ypa1, wpa, hpa);
-  ctx.rect(xga1, yga1, wga, hga);
-  ctx.rect(xpa2, ypa2, wpa, hpa);
-  ctx.rect(xga2, yga2, wga, hga);
-  ctx.closePath();
-  ctx.strokeStyle = 'white';
-  ctx.stroke();
-  // Corner areas:
-  ctx.beginPath();
-  ctx.arc(xp, yp, 6, 0, Math.PI / 2, false);
-  ctx.strokeStyle = 'white';
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(xp + wp, yp, 6, Math.PI, Math.PI / 2, true);
-  ctx.strokeStyle = 'white';
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(xp, yp + hp, 6, 0, -Math.PI / 2, true);
-  ctx.strokeStyle = 'white';
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(xp + wp, yp + hp, 6, -Math.PI / 2, Math.PI, true);
-  ctx.strokeStyle = 'white';
-  ctx.stroke();
+  bg.draw();
+  lines.draw();
+  penaltyAreas.draw();
+  cornerAreas.draw();
 };
 
 const drawPlayers1 = () => {
@@ -190,25 +205,9 @@ const drawBall = () => {
   ctx.fill();
 };
 
-const moveBall = () => {
-  if (ball.y < yga1 || ball.y > yga1 + hga) {
-    speedBall = -speedBall;
-  }
-  ball.y -= speedBall;
-};
-
-const moveGoalkeepers = () => {
-  if (goalkeeper1.y < yga1 || goalkeeper1.y > yga1 + hga) {
-    speedPlayers = -speedPlayers;
-  }
-  goalkeeper1.y -= speedPlayers;
-};
-
 const tick = () => {
   pitch();
   drawBall();
-  moveBall();
-  moveGoalkeepers();
   if (checkbox.checked) gridDraw();
   drawPlayers1();
   drawPlayers2();
