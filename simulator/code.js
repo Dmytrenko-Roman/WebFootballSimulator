@@ -20,8 +20,8 @@ const myStroke = color => {
 
 const bg = {
   linelength: 40,
-  color1: 'green',
-  color2: 'darkgreen',
+  color1: '#0000FF',
+  color2: '#0000A0',
   draw() {
     ctx.beginPath();
     ctx.fillStyle = this.color1;
