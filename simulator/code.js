@@ -7,11 +7,6 @@ const checkbox = document.getElementById('grid');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-console.log(canvas.height);
-
-let speedPlayers = 0.5;
-let speedBall = 0.5;
-
 const wp = 600;
 const hp = 400;
 const xp = (canvas.width / 2) - (wp / 2);
@@ -19,7 +14,7 @@ const yp = (canvas.height / 2) - (hp / 2);
 
 const bg = {
   linelength: 40,
-  draw: function() {
+  draw() {
     ctx.beginPath();
     ctx.fillStyle = 'green';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -30,10 +25,10 @@ const bg = {
       ctx.fillRect(xp + i, yp, this.linelength, hp);
     }
   }
-}
+};
 
 const lines = {
-  draw: function() {
+  draw() {
     ctx.fillStyle = 'white';
     ctx.arc(canvas.width / 2, canvas.height / 2, 4, 0, Math.PI * 2);
     ctx.fill();
@@ -47,7 +42,7 @@ const lines = {
     ctx.strokeStyle = 'white';
     ctx.stroke();
   }
-}
+};
 
 const penaltyAreas = {
   xpa1: xp,
@@ -62,7 +57,7 @@ const penaltyAreas = {
   hpa: 220,
   wga: 45,
   hga: 80,
-  draw: function() {
+  draw() {
     ctx.beginPath();
     ctx.ellipse(xp + 130, canvas.height / 2, 30, 40, 0, -Math.PI / 2, Math.PI / 2);
     ctx.closePath();
@@ -79,10 +74,10 @@ const penaltyAreas = {
     ctx.strokeStyle = 'white';
     ctx.stroke();
   }
-}
+};
 
 const cornerAreas = {
-  draw: function() {
+  draw() {
     ctx.beginPath();
     ctx.arc(xp, yp, 6, 0, Math.PI / 2, false);
     ctx.strokeStyle = 'white';
@@ -100,7 +95,7 @@ const cornerAreas = {
     ctx.strokeStyle = 'white';
     ctx.stroke();
   }
-}
+};
 
 // -------------
 

@@ -1,11 +1,11 @@
-'use strict';
+/*'use strict';
 
 const pitchh = {
   xp: 10,
   yp: 10,
   wp: 600,
   hp: 400,
-}
+};
 
 const bg = {
   linelength: 40,
@@ -20,6 +20,6 @@ const bg = {
       ctx.fillRect(xp + i, yp, this.linelength, hp);
     }
   }
-}
+};
 
-//module.exports = { bg };
+//module.exports = { bg }; */
